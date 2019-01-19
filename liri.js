@@ -12,14 +12,11 @@ var movieTitle = process.argv[3];
 var axios = require("axios");
 // var bands = keys.bandsintown.api_key;
 
-var spotify = new Spotify({
-  id: keys.spotify.id,
-  secret: keys.spotify.secret
-});
+var spotify = new Spotify(keys.spotify);
 
 //create commands
   switch (liriCommands) {
-    case "spotify-this":
+    case "spotify-this-song":
       spotifyThis();
       break;
 
@@ -31,12 +28,12 @@ var spotify = new Spotify({
       movieThis();
       break;
 
-    case "random-this":
+    case "do-what-it-says":
       randomThis();
       break;
 
     default:
-      console.log("Please try again using the following search terms: 'spotify-this', 'concert-this', 'movie-this', or 'random-this' - following node liri.js");
+      console.log("Please try again using the following search terms: 'spotify-this-song', 'concert-this', 'movie-this', or 'do-what-it-says' - following node liri.js");
       break;
   }
 
@@ -60,11 +57,12 @@ function spotifyThis(songTitle) {
         for (var i = 0; i < 5; i++) {
           if (trackInfo[i] != undefined) {
             var spotifyResults =
-              "Song: " + trackInfo[i].name +
-              "Artist: " + trackInfo[i].artists[0].name +
-              "Album: " + trackInfo[i].album.name +
+              "Song: " + trackInfo[i].name + "\n" +
+              "Artist: " + trackInfo[i].artists[0].name + "\n" +
+              "Album: " + trackInfo[i].album.name + "\n" +
               "Preview URL: " + trackInfo[i].preview_url
             //console log
+            console.log("\n-----------------\n");
             console.log(spotifyResults);
             console.log("\n-----------------\n");
           };
@@ -89,20 +87,19 @@ function movieThis() {
 
     //if request comes back successful
     if (!error && response.statusCode === 200) {
-      console.log('success');
+      // console.log('success');
       //pull data and console log
       var myMovieData = JSON.parse(body);
       var omdbResults =
-        "Title: " + myMovieData.Title +
-        "Year: " + myMovieData.Year +
-        "IMDB Rating: " + myMovieData.Ratings[0].Value +
-        "Rotten Tomatoes Rating: " + myMovieData[1].Value +
-        "Origin Country: " + myMovieData.Country +
-        "Language: " + myMovieData.Language +
-        "Plot: " + myMovieData.Plot +
-        "Actors: " + myMovieData.Actors +
-
+        "Title: " + myMovieData.Title + "\n" +
+        "Year: " + myMovieData.Year + "\n" +
+        "IMDB Rating: " + myMovieData.Ratings[0].Value + "\n" +
+        "Origin Country: " + myMovieData.Country + "\n" +
+        "Language: " + myMovieData.Language + "\n" +
+        "Plot: " + myMovieData.Plot + "\n" +
+        "Actors: " + myMovieData.Actors + "\n" +
         //console log
+        console.log("\n-----------------\n");
         console.log(omdbResults);
       console.log("\n-----------------\n");
     } else {
@@ -123,7 +120,7 @@ function randomThis() {
     var splitData = data.split(',');
 
     console.log("\n-------------------\n");
-    if (splitData[0] === 'spotify-this') {
+    if (splitData[0] === 'spotify-this-song') {
       spotifyThis(splitData[1])
     } else if (splitData[0] === 'concert-this') {
       concertThis(splitData[1])
